@@ -4,7 +4,7 @@ This repository contains plugins that configure builds to deploy artefacts to ma
 
 # Plugins
 
-## com.link-intersystems.gradle.maven-central-project [![Maven Central Version](https://img.shields.io/maven-central/v/com.link-intersystems.gradle.maven-central-project/com.link-intersystems.gradle.maven-central-project.gradle.plugin)](https://mvnrepository.com/artifact/maven-central-project)
+## com.link-intersystems.gradle.maven-central-project [![Maven Central Version](https://img.shields.io/maven-central/v/com.link-intersystems.gradle.maven-central-project/com.link-intersystems.gradle.maven-central-project.gradle.plugin)](https://repo1.maven.org/maven2/com/link-intersystems/gradle/maven-central-project/com.link-intersystems.gradle.maven-central-project.gradle.plugin/)
 
 Add this plugin to the root project's `build.gradle.kts`
 
@@ -15,7 +15,7 @@ plugins {
 }
 ```
 
-## com.link-intersystems.gradle.maven-central-library [![Maven Central Version](https://img.shields.io/maven-central/v/com.link-intersystems.gradle.maven-central-library/com.link-intersystems.gradle.maven-central-library.gradle.plugin)](https://mvnrepository.com/artifact/maven-central-library)
+## com.link-intersystems.gradle.maven-central-library [![Maven Central Version](https://img.shields.io/maven-central/v/com.link-intersystems.gradle.maven-central-library/com.link-intersystems.gradle.maven-central-library.gradle.plugin)](https://repo1.maven.org/maven2/com/link-intersystems/gradle/maven-central-library/com.link-intersystems.gradle.maven-central-library.gradle.plugin/)
 
 Add this plugin to the project's `build.gradle.kts` that contains a java library to deploy.
 
