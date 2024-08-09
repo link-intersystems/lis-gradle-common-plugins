@@ -75,3 +75,7 @@ signing {
         logger.lifecycle("Signing publications")
     }
 }
+
+release {
+    tagTemplate = "v\${version}"
+}
