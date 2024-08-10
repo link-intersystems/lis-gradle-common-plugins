@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+latest_tag=$(git tag -l 'v*' --sort=-committerdate | tail -n1)
+
+git reset --hard "$latest_tag^"
+git tag -d "$latest_tag"
+git push --delete origin "$latest_tag"
+git push -f
