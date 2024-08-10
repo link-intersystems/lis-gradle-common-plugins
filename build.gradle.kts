@@ -2,7 +2,7 @@ plugins {
     `kotlin-dsl`
     id("maven-publish") // if you never publish the plugin, you may remove this (but it also does not hurt)
     signing
-    id("io.github.gradle-nexus.publish-plugin") version "1.0.0"
+    id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
     id("net.researchgate.release") version "3.0.2"
 }
 
