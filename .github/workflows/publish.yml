@@ -38,5 +38,6 @@ jobs:
          ./gradlew publish
       env:
         GPG_SIGNING_KEY: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
+        GPG_SIGNING_PASSPHRASE: ${{ secrets.OSSRH_GPG_SIGNING_PASSPHRASE }}
         ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USER }}
         ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASS }}

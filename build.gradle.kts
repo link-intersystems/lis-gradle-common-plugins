@@ -6,6 +6,8 @@ plugins {
     id("net.researchgate.release") version "3.0.2"
 }
 
+val releaseVersion = !version.toString().endsWith("-SNAPSHOT")
+
 dependencies {
     implementation("io.github.gradle-nexus:publish-plugin:1.0.0")
 
@@ -32,9 +34,11 @@ nexusPublishing {
     }
 }
 
+
 publishing {
-    afterEvaluate {
-        publications.withType<MavenPublication> {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
             pom {
                 name.set("Lis Gradle Maven Central")
                 description.set("Plugins to deploy libraries to the maven central repository.")
@@ -66,18 +70,20 @@ publishing {
     }
 }
 
+val signingKey = providers.environmentVariable("GPG_SIGNING_KEY")
+val signingPassphrase = providers.environmentVariable("GPG_SIGNING_PASSPHRASE")
+val signingRequired = signingKey.isPresent && signingPassphrase.isPresent && releaseVersion && gradle.taskGraph.allTasks.any { it is PublishToMavenRepository }
+
+
+logger.lifecycle("Signing enabled = $signingRequired")
+
 signing {
     setRequired {
-        !version.toString().endsWith("-SNAPSHOT") && gradle.taskGraph.allTasks.any { it is PublishToMavenRepository }
+        signingRequired
     }
 
-    val signingKey = providers.environmentVariable("GPG_SIGNING_KEY")
-    val signingPassphrase = providers.environmentVariable("GPG_SIGNING_PASSPHRASE")
-    if (signingKey.isPresent) {
-        useInMemoryPgpKeys(signingKey.get(), signingPassphrase.orNull)
-        sign(publishing.publications)
-        logger.lifecycle("Signing publications")
-    }
+    useInMemoryPgpKeys(signingKey.get(), signingPassphrase.orNull)
+    sign(publishing.publications["mavenJava"])
 }
 
 release {
