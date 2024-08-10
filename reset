@@ -2,7 +2,12 @@
 
 latest_tag=$(git tag -l 'v*' --sort=-committerdate | tail -n1)
 
+cherry_pick=$(git rev-list "$( git rev-list --grep="new version" ${latest_tag}..HEAD)..HEAD")
+
 git reset --hard "$latest_tag^"
 git tag -d "$latest_tag"
+if [ ! -z "${cherry_pick}" ]; then
+  git cherry-pick --allow-empty ${cherry_pick}
+fi
 git push --delete origin "$latest_tag"
 git push -f
