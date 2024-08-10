@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+DEFAULT_ANSWER="n"
+
+while [[ $# -gt 0 ]] && [[ "$1" == "--"* ]] ;
+do
+    opt="$1";
+    shift;              #expose next argument
+    case "$opt" in
+        "--" ) break 2;;
+        "--batch" )
+           DEFAULT_ANSWER="y"; shift;;
+        *) echo >&2 "Invalid option: $@"; exit 1;;
+   esac
+done
+
+
+latest_tag=$(git tag -l 'v*' --sort=-committerdate | tail -n1)
+
+if ! [[ "$DEFAULT_ANSWER" =~ ^[Yy] ]]; then
+  read -p "Do you want to delete tag '$latest_tag'? " -n 1 -r ANSWER
+  echo    # (optional) move to a new line
+fi
+
+if [[ $ANSWER =~ ^[Yy]$ || $DEFAULT_ANSWER =~ ^[Yy] ]]
+then
+
+  cherry_pick=$(git rev-list "$( git rev-list --grep="new version" ${latest_tag}..HEAD)..HEAD")
+
+  git reset --hard "$latest_tag^"
+  git tag -d "$latest_tag"
+  if [ ! -z "${cherry_pick}" ]; then
+    echo "Found commits after the latest release ${latest_tag} to cherry-pick:"
+    echo "$cherry_pick{}" | tr ' ' '\n'
+    git cherry-pick --allow-empty ${cherry_pick}
+  fi
+
+
+  if ! [[ "$DEFAULT_ANSWER" =~ ^[Yy] ]]; then
+    read -p "Do you want to force push the changes? " -n 1 -r ANSWER
+    echo    # (optional) move to a new line
+  fi
+
+  echo "ANSWER $ANSWER"
+  echo "DEFAULT_ANSWER $DEFAULT_ANSWER"
+  if [[ $ANSWER =~ ^[Yy]$ || $DEFAULT_ANSWER =~ ^[Yy] ]]
+  then
+    git push --delete origin "$latest_tag"
+    git push -f
+  fi
+fi
+
