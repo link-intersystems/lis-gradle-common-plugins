@@ -34,11 +34,9 @@ nexusPublishing {
     }
 }
 
-
 publishing {
-    publications {
-        create<MavenPublication>("mavenJava") {
-            from(components["java"])
+    afterEvaluate {
+        publications.withType<MavenPublication> {
             pom {
                 name.set("Lis Gradle Maven Central")
                 description.set("Plugins to deploy libraries to the maven central repository.")
@@ -84,7 +82,7 @@ signing {
 
     if (signingRequired) {
         useInMemoryPgpKeys(signingKey.get(), signingPassphrase.orNull)
-        sign(publishing.publications["mavenJava"])
+        sign(publishing.publications)
     }
 }
 
