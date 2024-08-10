@@ -82,8 +82,10 @@ signing {
         signingRequired
     }
 
-    useInMemoryPgpKeys(signingKey.get(), signingPassphrase.orNull)
-    sign(publishing.publications["mavenJava"])
+    if (signingRequired) {
+        useInMemoryPgpKeys(signingKey.get(), signingPassphrase.orNull)
+        sign(publishing.publications["mavenJava"])
+    }
 }
 
 release {
