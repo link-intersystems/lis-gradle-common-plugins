@@ -67,6 +67,10 @@ publishing {
 }
 
 signing {
+    setRequired {
+        !version.toString().endsWith("-SNAPSHOT") && gradle.taskGraph.allTasks.any { it is PublishToMavenRepository }
+    }
+
     val signingKey = providers.environmentVariable("GPG_SIGNING_KEY")
     val signingPassphrase = providers.environmentVariable("GPG_SIGNING_PASSPHRASE")
     if (signingKey.isPresent) {
