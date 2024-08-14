@@ -11,9 +11,29 @@ Add this plugin to the root project's `build.gradle.kts`
 ```kotlin
 // build.gradle.kts
 plugins {
-    id("com.link-intersystems.gradle.maven-central-project") version "0.0.1"
+    id("com.link-intersystems.gradle.maven-central-project") version "+" // set a specific version
 }
 ```
+
+## com.link-intersystems.gradle.maven-central-library [![Maven Central Version](https://img.shields.io/maven-central/v/com.link-intersystems.gradle.maven-central-artifact/com.link-intersystems.gradle.maven-central-artifact.gradle.plugin)](https://repo1.maven.org/maven2/com/link-intersystems/gradle/maven-central-artifact/com.link-intersystems.gradle.maven-central-artifact.gradle.plugin/)
+
+This the base plugin for the other more specific plugins listed below. It configures maven-publish and the signing plugin 
+
+```kotlin
+// build.gradle.kts
+plugins {
+    id("com.link-intersystems.gradle.maven-central-artifact") version "+" // set a specific version
+}
+```
+
+The configured signing plugin expects that the following environment variables are set:
+
+| Environment Variable   | Description                                               |
+|------------------------|-----------------------------------------------------------|
+| GPG_SIGNING_KEY        | The private key to sign the artifacts with in PEM format. |
+| GPG_SIGNING_PASSPHRASE | The passphrase of the signing key.                        |
+
+See the `gradlew_gpg` script described below.
 
 ## com.link-intersystems.gradle.maven-central-library [![Maven Central Version](https://img.shields.io/maven-central/v/com.link-intersystems.gradle.maven-central-library/com.link-intersystems.gradle.maven-central-library.gradle.plugin)](https://repo1.maven.org/maven2/com/link-intersystems/gradle/maven-central-library/com.link-intersystems.gradle.maven-central-library.gradle.plugin/)
 
@@ -22,17 +42,33 @@ Add this plugin to the project's `build.gradle.kts` that contains a java library
 ```kotlin
 // build.gradle.kts
 plugins {
-    id("com.link-intersystems.gradle.maven-central-library") version "0.0.1"
+    id("com.link-intersystems.gradle.maven-central-library") version "+" // set a specific version
 }
 ```
+
+## com.link-intersystems.gradle.maven-central-platform [![Maven Central Version](https://img.shields.io/maven-central/v/com.link-intersystems.gradle.maven-central-platform/com.link-intersystems.gradle.maven-central-platform.gradle.plugin)](https://repo1.maven.org/maven2/com/link-intersystems/gradle/maven-central-platform/com.link-intersystems.gradle.maven-central-platform.gradle.plugin/)
+
+Add this plugin to the project's `build.gradle.kts` that contains a java platform (aka BOM) to deploy. See [Sharing dependency versions between projects](https://docs.gradle.org/current/userguide/platforms.html) for details.
+
+```kotlin
+// build.gradle.kts
+plugins {
+    id("com.link-intersystems.gradle.maven-central-platform") version "+" // set a specific version
+}
+```
+
+## Maven Central Deployment Preconditions
+
+To deploy an artifact to the maven central repository via the sonatype staging repositories, you need to add more information
+to the project pom in order to pass pre-deployment checks.
 
 Add publishing information to generate a valid pom. Otherwise, sonatype deploy checks will fail when you try to
 close the staging repository. E.g.
 
 ```kotlin
 // build.gradle.kts
-publishing {
-    afterEvaluate {
+afterEvaluate {
+    publishing {
         publications.withType<MavenPublication> {
             pom {
                 name.set("Lis Gradle Maven Central")
@@ -67,6 +103,8 @@ publishing {
 ```
 
 # How to deploy to maven central
+
+The 
 
 All artifacts that are deployed to maven central need to be signed. Thus, you must provide a signing key and passphrase.
 
