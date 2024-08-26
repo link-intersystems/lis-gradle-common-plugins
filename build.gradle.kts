@@ -109,6 +109,12 @@ afterEvaluate {
 }
 
 
+val pushToRemoteName = if(project.findProperty("pushToRemote") != null) "origin" else ""
+
 release {
     tagTemplate = "v\${version}"
+
+    git {
+        pushToRemote = pushToRemoteName
+    }
 }
