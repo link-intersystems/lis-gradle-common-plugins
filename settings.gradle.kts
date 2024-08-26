@@ -1,4 +1,4 @@
-rootProject.name = "lis-gradle-maven-central"
+rootProject.name = "lis-gradle-common-plugins"
 
 pluginManagement {
     repositories {
