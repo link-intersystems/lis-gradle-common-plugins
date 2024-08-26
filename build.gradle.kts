@@ -40,9 +40,9 @@ afterEvaluate {
     publishing {
         publications.withType<MavenPublication> {
             pom {
-                name.set("Lis Gradle Maven Central")
+                name.set("Lis Gradle Common Plugins")
                 description.set("Plugins to deploy libraries to the maven central repository.")
-                url.set("https://github.com/link-intersystems/lis-gradle-maven-central")
+                url.set("https://github.com/link-intersystems/lis-gradle-common-plugins")
                 licenses {
                     license {
                         name.set("Apache License, Version 2.0")
@@ -61,9 +61,9 @@ afterEvaluate {
                     }
                 }
                 scm {
-                    url.set("https://github.com/link-intersystems/lis-gradle-maven-central")
-                    connection.set("scm:git:https://github.com/link-intersystems/lis-gradle-maven-central.git")
-                    developerConnection.set("scm:git:https://github.com/link-intersystems/lis-gradle-maven-central.git")
+                    url.set("https://github.com/link-intersystems/lis-gradle-common-plugins")
+                    connection.set("scm:git:https://github.com/link-intersystems/lis-gradle-common-plugins.git")
+                    developerConnection.set("scm:git:https://github.com/link-intersystems/lis-gradle-common-plugins.git")
                 }
             }
         }
