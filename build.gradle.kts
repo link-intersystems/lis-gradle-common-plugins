@@ -6,6 +6,7 @@ plugins {
     id("net.researchgate.release") version "3.0.2"
 }
 
+
 dependencies {
     implementation("io.github.gradle-nexus:publish-plugin:2.0.0")
 
@@ -13,6 +14,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.2")
     testImplementation("org.mockito:mockito-core:5.11.0")
 }
+
 
 java {
     toolchain {
@@ -23,6 +25,7 @@ java {
     withJavadocJar()
 }
 
+
 nexusPublishing {
     repositories {
         sonatype {
@@ -31,6 +34,7 @@ nexusPublishing {
         }
     }
 }
+
 
 afterEvaluate {
     publishing {
@@ -65,14 +69,18 @@ afterEvaluate {
         }
     }
 
+
     signing {
-        val signingKey = providers.environmentVariable("GPG_SIGNING_KEY")
-        val signingPassphrase = providers.environmentVariable("GPG_SIGNING_PASSPHRASE")
-        val signingEnabled = signingKey.isPresent && signingPassphrase.isPresent
+        val signingKey: String? by project
+        val signingPassphrase: String? by project
+
+        val signingEnabled = signingKey != null && signingPassphrase != null
+        isRequired = signingEnabled
+
+        sign(publishing.publications)
 
         if (signingEnabled) {
-            useInMemoryPgpKeys(signingKey.get(), signingPassphrase.orNull)
-            sign(publishing.publications)
+            useInMemoryPgpKeys(signingKey, signingPassphrase)
 
             val publishedGAVs = publishing.publications.withType(MavenPublication::class).flatMap {
                 val groupId = it.groupId
@@ -99,7 +107,6 @@ afterEvaluate {
         }
     }
 }
-
 
 
 release {
