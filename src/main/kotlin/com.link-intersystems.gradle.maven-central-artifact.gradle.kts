@@ -11,17 +11,16 @@ afterEvaluate {
         val signingPassword: String? by project
         val signingPasswordExists = signingPassword != null
 
-        logger.debug("signingKey exists = {}, signingPassword {}", signingKeyExists , signingPasswordExists)
+        logger.debug("signingKey exists = {}, signingPassword {}", signingKeyExists, signingPasswordExists)
 
         val signingEnabled = signingKey != null && signingPassword != null
         logger.debug("signingEnabled = {}", signingEnabled)
 
         isRequired = signingEnabled
 
-        sign(publishing.publications)
-
         if (signingEnabled) {
             useInMemoryPgpKeys(signingKey, signingPassword)
+            sign(publishing.publications)
 
             val publishedGAVs = publishing.publications.withType(MavenPublication::class).flatMap {
                 val groupId = it.groupId
