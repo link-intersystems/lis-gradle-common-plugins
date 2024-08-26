@@ -72,15 +72,15 @@ afterEvaluate {
 
     signing {
         val signingKey: String? by project
-        val signingPassphrase: String? by project
+        val signingPassword: String? by project
 
-        val signingEnabled = signingKey != null && signingPassphrase != null
+        val signingEnabled = signingKey != null && signingPassword != null
         isRequired = signingEnabled
 
         sign(publishing.publications)
 
         if (signingEnabled) {
-            useInMemoryPgpKeys(signingKey, signingPassphrase)
+            useInMemoryPgpKeys(signingKey, signingPassword)
 
             val publishedGAVs = publishing.publications.withType(MavenPublication::class).flatMap {
                 val groupId = it.groupId
