@@ -5,17 +5,16 @@ plugins {
 
 afterEvaluate {
     signing {
-        val signingKey = providers.environmentVariable("GPG_SIGNING_KEY")
-        val signingPassphrase = providers.environmentVariable("GPG_SIGNING_PASSPHRASE")
-        val signingEnabled = signingKey.isPresent && signingPassphrase.isPresent
+        val signingKey: String? by project
+        val signingPassphrase: String? by project
 
-
+        val signingEnabled = signingKey != null && signingPassphrase != null
         isRequired = signingEnabled
 
         sign(publishing.publications)
 
         if (signingEnabled) {
-            useInMemoryPgpKeys(signingKey.get(), signingPassphrase.get())
+            useInMemoryPgpKeys(signingKey, signingPassphrase)
 
             val publishedGAVs = publishing.publications.withType(MavenPublication::class).flatMap {
                 val groupId = it.groupId
