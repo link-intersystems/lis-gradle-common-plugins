@@ -15,7 +15,7 @@ plugins {
 }
 ```
 
-## com.link-intersystems.gradle.maven-central-library [![Maven Central Version](https://img.shields.io/maven-central/v/com.link-intersystems.gradle.maven-central-artifact/com.link-intersystems.gradle.maven-central-artifact.gradle.plugin)](https://repo1.maven.org/maven2/com/link-intersystems/gradle/maven-central-artifact/com.link-intersystems.gradle.maven-central-artifact.gradle.plugin/)
+## com.link-intersystems.gradle.maven-central-artifact [![Maven Central Version](https://img.shields.io/maven-central/v/com.link-intersystems.gradle.maven-central-artifact/com.link-intersystems.gradle.maven-central-artifact.gradle.plugin)](https://repo1.maven.org/maven2/com/link-intersystems/gradle/maven-central-artifact/com.link-intersystems.gradle.maven-central-artifact.gradle.plugin/)
 
 This the base plugin for the other more specific plugins listed below. It configures maven-publish and the signing plugin 
 
@@ -26,14 +26,18 @@ plugins {
 }
 ```
 
-The configured signing plugin expects that the following environment variables are set:
+The configured signing plugin expects that the following project properties are set:
 
-| Environment Variable   | Description                                               |
-|------------------------|-----------------------------------------------------------|
-| GPG_SIGNING_KEY        | The private key to sign the artifacts with in PEM format. |
-| GPG_SIGNING_PASSPHRASE | The passphrase of the signing key.                        |
+| Project Property | Description                                               |
+|------------------|-----------------------------------------------------------|
+| signingKey       | The private key to sign the artifacts with in PEM format. |
+| signingPassword  | The passphrase of the signing key.                        |
 
-See the `gradlew_gpg` script described below.
+> [!TIP]
+> You can set project properties via environment variables starting with ORG_GRADLE_PROJECT_
+> 
+> ORG_GRADLE_PROJECT_signingKey
+> ORG_GRADLE_PROJECT_signingPassword
 
 ## com.link-intersystems.gradle.maven-central-library [![Maven Central Version](https://img.shields.io/maven-central/v/com.link-intersystems.gradle.maven-central-library/com.link-intersystems.gradle.maven-central-library.gradle.plugin)](https://repo1.maven.org/maven2/com/link-intersystems/gradle/maven-central-library/com.link-intersystems.gradle.maven-central-library.gradle.plugin/)
 
@@ -59,15 +63,16 @@ plugins {
 
 ## Maven Central Deployment Preconditions
 
-To deploy an artifact to the maven central repository via the sonatype staging repositories, you need to add more information
-to the project pom in order to pass pre-deployment checks.
+1. **Complete Maven POM information**
 
-Add publishing information to generate a valid pom. Otherwise, sonatype deploy checks will fail when you try to
-close the staging repository. E.g.
+    To deploy an artifact to the maven central repository via the sonatype staging repositories, you need to add more information
+    to the project pom in order to pass pre-deployment checks.
 
-```kotlin
-// build.gradle.kts
-afterEvaluate {
+    Add publishing information to generate a valid pom. Otherwise, sonatype deploy checks will fail when you try to
+    close the staging repository. E.g.
+
+    ```kotlin
+    // build.gradle.kts
     publishing {
         publications.withType<MavenPublication> {
             pom {
@@ -99,39 +104,26 @@ afterEvaluate {
             }
         }
     }
-}
-```
+    ```
+   
+2. **Release Version**
+
+   Ensure that the project artifacts version is a release version (without -SNAPSHOT), before you publish.
+   Otherwise, the artifacts will be published to a sonatype snapshot repository and no staging repository is created.
 
 # How to deploy to maven central
 
-The 
+Ensure that all [preconditions](#maven-central-deployment-preconditions) are met.
 
-All artifacts that are deployed to maven central need to be signed. Thus, you must provide a signing key and passphrase.
+All artifacts that are deployed to maven central need to be signed. Thus, you must provide a signingKey and signingPassword.
+Take a look at [com.link-intersystems.gradle.maven-central-artifact](#comlink-intersystemsgradlemaven-central-artifact-) above.
 
-To ease the deployment you can use the `gradle_gpg` script instead of the `gradlew`.
+To ease the deployment you can use the [`exportGpgSigning`](https://gist.github.com/renelink/6a12336b5282c94a69a598deddf295ab) bash function.
 
-## gradlew_gpg
-
-Either pass the signing key fingerprint as the first argument
-
-```shell
-./gradlew_gpg 1CEFE097A0DC0F8C2F92688 publish
-```
-
-or set the singing key fingerprint as an environment variable
+After the gpg key and password is set you can just run `./gradlew publish`
 
 ```shell
-export GPG_KEY_FINGERPRINT=1CEFE097A0DC0F8C2F92688
-
-./gradlew_gpg publish
-```
-you can pass any argument that can be passed to `.gradlew` to the `gradlew_gpg` script.
-
-When the script executes it will ask you for the passphrase
-
-```shell
-$ ./gradlew_gpg publish
-Enter passphrase: **************
+$ ./gradlew publish
 
 > Configure project :
 Signing publications

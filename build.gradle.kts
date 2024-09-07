@@ -36,80 +36,68 @@ nexusPublishing {
 }
 
 
-afterEvaluate {
-    publishing {
-        publications.withType<MavenPublication> {
-            pom {
-                name.set("Lis Gradle Common Plugins")
-                description.set("Plugins to deploy libraries to the maven central repository.")
-                url.set("https://github.com/link-intersystems/lis-gradle-common-plugins")
-                licenses {
-                    license {
-                        name.set("Apache License, Version 2.0")
-                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("rene.link")
-                        name.set("René Link")
-                        email.set("rene.link@link-intersystems.com")
-                        organization.set("Link Intersystems GmbH")
-                        organizationUrl.set("https://www.link-intersystems.com")
-                        url.set("https://stackoverflow.com/users/974186/ren%C3%A9-link")
-                        roles.set(listOf("developer"))
-                    }
-                }
-                scm {
-                    url.set("https://github.com/link-intersystems/lis-gradle-common-plugins")
-                    connection.set("scm:git:https://github.com/link-intersystems/lis-gradle-common-plugins.git")
-                    developerConnection.set("scm:git:https://github.com/link-intersystems/lis-gradle-common-plugins.git")
-                }
+publishing.publications.withType<MavenPublication> {
+    pom {
+        name.set("Lis Gradle Common Plugins")
+        description.set("Plugins to deploy libraries to the maven central repository.")
+        url.set("https://github.com/link-intersystems/lis-gradle-common-plugins")
+        licenses {
+            license {
+                name.set("Apache License, Version 2.0")
+                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
             }
         }
-    }
-
-
-    signing {
-        val signingKey: String? by project
-        val signingPassword: String? by project
-
-        val signingEnabled = signingKey != null && signingPassword != null
-        isRequired = signingEnabled
-
-        sign(publishing.publications)
-
-        if (signingEnabled) {
-            useInMemoryPgpKeys(signingKey, signingPassword)
-
-            val publishedGAVs = publishing.publications.withType(MavenPublication::class).flatMap {
-                val groupId = it.groupId
-                val artifactId = it.artifactId
-                val artifactVersion = it.version
-
-                val pomGav = "$groupId:$artifactId:pom:$artifactVersion"
-                val allArtifactGAVs = mutableSetOf(pomGav)
-
-                if (it.artifacts.isNotEmpty()) {
-                    val artifactGAVs = it.artifacts.filter { a -> a.extension != null }.map {
-                        val extension = it.extension
-                        "$groupId:$artifactId:$extension:$artifactVersion"
-                    }
-                    allArtifactGAVs.addAll(artifactGAVs)
-                }
-
-                allArtifactGAVs
-            }.joinToString(separator = "\n  - ", prefix = "  - ")
-
-            logger.lifecycle("Signing publications: \n$publishedGAVs")
-        } else {
-            logger.info("Signing disabled. Set the GPG_SIGNING_KEY and GPG_SIGNING_PASSPHRASE environment variable to enable.")
+        developers {
+            developer {
+                id.set("rene.link")
+                name.set("René Link")
+                email.set("rene.link@link-intersystems.com")
+                organization.set("Link Intersystems GmbH")
+                organizationUrl.set("https://www.link-intersystems.com")
+                url.set("https://stackoverflow.com/users/974186/ren%C3%A9-link")
+                roles.set(listOf("developer"))
+            }
+        }
+        scm {
+            url.set("https://github.com/link-intersystems/lis-gradle-common-plugins")
+            connection.set("scm:git:https://github.com/link-intersystems/lis-gradle-common-plugins.git")
+            developerConnection.set("scm:git:https://github.com/link-intersystems/lis-gradle-common-plugins.git")
         }
     }
 }
 
 
-val pushToRemoteName = if(project.findProperty("pushToRemote") != null) "origin" else ""
+publishing.repositories {
+    maven {
+        name = "TempLocal"
+        url = uri(project.layout.buildDirectory.file(".m2/repository"))
+    }
+}
+
+
+signing {
+    val signingKey: String? by project
+    val signingKeyExists = signingKey != null
+
+    val signingPassword: String? by project
+    val signingPasswordExists = signingPassword != null
+
+    logger.debug("signingKey exists = {}, signingPassword {}", signingKeyExists, signingPasswordExists)
+
+    val signingEnabled = signingKey != null && signingPassword != null
+    logger.debug("signingEnabled = {}", signingEnabled)
+
+    isRequired = signingEnabled
+
+    sign(publishing.publications)
+
+    if (signingEnabled) {
+        useInMemoryPgpKeys(signingKey, signingPassword)
+    }
+}
+
+
+val pushToRemoteName = if (project.findProperty("pushToRemote") != null) "origin" else ""
 
 release {
     tagTemplate = "v\${version}"
