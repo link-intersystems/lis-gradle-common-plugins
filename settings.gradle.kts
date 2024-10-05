@@ -13,6 +13,7 @@ plugins {
     id("com.link-intersystems.gradle.published-artifact") version "0.1.0" apply false
     id("com.link-intersystems.gradle.java-project") version "0.1.0" apply false
     id("com.link-intersystems.gradle.java-library") version "0.1.0" apply false
+    id("com.link-intersystems.gradle.maven-central-project") version "0.1.0" apply false
 }
 
 dependencyResolutionManagement {
