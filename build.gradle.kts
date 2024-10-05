@@ -1,15 +1,15 @@
 plugins {
     `kotlin-dsl`
-    id("com.link-intersystems.gradle.maven-central-artifact")
+    id("com.link-intersystems.gradle.published-artifact")
     id("com.link-intersystems.gradle.maven-central-project")
-    id("com.link-intersystems.gradle.maven-central-java")
-    id("net.researchgate.release") version "3.0.2"
+    id("com.link-intersystems.gradle.java-library")
+    id("net.researchgate.release")
 }
 
 
 dependencies {
     implementation("io.github.gradle-nexus:publish-plugin:2.0.0")
-    implementation("net.researchgate:gradle-release:3.0.2")
+    compileOnly("net.researchgate:gradle-release:3.0.2")
 }
 
 
@@ -48,15 +48,5 @@ publishing.repositories {
     maven {
         name = "TempLocal"
         url = uri(project.layout.buildDirectory.file(".m2/repository"))
-    }
-}
-
-val pushToRemoteName = if (project.findProperty("pushToRemote") != null) "origin" else ""
-
-release {
-    tagTemplate = "v\${version}"
-
-    git {
-        pushToRemote = pushToRemoteName
     }
 }

@@ -10,9 +10,9 @@ pluginManagement {
 
 plugins {
     id("com.link-intersystems.gradle.multi-module") version "0.5.4"
-    id("com.link-intersystems.gradle.maven-central-artifact") version "0.0.11" apply false
-    id("com.link-intersystems.gradle.maven-central-project") version "0.0.11" apply false
-    id("com.link-intersystems.gradle.maven-central-java") version "0.0.11" apply false
+    id("com.link-intersystems.gradle.published-artifact") version "0.1.0" apply false
+    id("com.link-intersystems.gradle.java-project") version "0.1.0" apply false
+    id("com.link-intersystems.gradle.java-library") version "0.1.0" apply false
 }
 
 dependencyResolutionManagement {
