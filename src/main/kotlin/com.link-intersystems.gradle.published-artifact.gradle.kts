@@ -1,3 +1,5 @@
+import org.gradle.api.DefaultTask
+
 plugins {
     `maven-publish`
     signing
@@ -22,4 +24,7 @@ signing {
     if (signingEnabled) {
         useInMemoryPgpKeys(signingKey, signingPassword)
     }
+}
+
+tasks.create<DefaultTask>("afterPublish") {
 }

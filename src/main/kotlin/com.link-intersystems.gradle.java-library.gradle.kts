@@ -1,6 +1,6 @@
 plugins {
-    `java-library`
-    id("com.link-intersystems.gradle.maven-central-java")
+    id("com.link-intersystems.gradle.published-artifact")
+    id("com.link-intersystems.gradle.java-project")
 }
 
 publishing {

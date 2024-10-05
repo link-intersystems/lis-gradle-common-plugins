@@ -1,6 +1,5 @@
 plugins {
     `java-library`
-    id("com.link-intersystems.gradle.maven-central-artifact")
 }
 
 java {

@@ -15,14 +15,14 @@ plugins {
 }
 ```
 
-## com.link-intersystems.gradle.maven-central-artifact [![Maven Central Version](https://img.shields.io/maven-central/v/com.link-intersystems.gradle.maven-central-artifact/com.link-intersystems.gradle.maven-central-artifact.gradle.plugin)](https://repo1.maven.org/maven2/com/link-intersystems/gradle/maven-central-artifact/com.link-intersystems.gradle.maven-central-artifact.gradle.plugin/)
+## com.link-intersystems.gradle.published-artifact [![Maven Central Version](https://img.shields.io/maven-central/v/com.link-intersystems.gradle.published-artifact/com.link-intersystems.gradle.published-artifact.gradle.plugin)](https://repo1.maven.org/maven2/com/link-intersystems/gradle/published-artifact/com.link-intersystems.gradle.published-artifact.gradle.plugin/)
 
 This the base plugin for the other more specific plugins listed below. It configures maven-publish and the signing plugin 
 
 ```kotlin
 // build.gradle.kts
 plugins {
-    id("com.link-intersystems.gradle.maven-central-artifact") version "+" // set a specific version
+    id("com.link-intersystems.gradle.published-artifact") version "+" // set a specific version
 }
 ```
 
@@ -116,7 +116,7 @@ plugins {
 Ensure that all [preconditions](#maven-central-deployment-preconditions) are met.
 
 All artifacts that are deployed to maven central need to be signed. Thus, you must provide a signingKey and signingPassword.
-Take a look at [com.link-intersystems.gradle.maven-central-artifact](#comlink-intersystemsgradlemaven-central-artifact-) above.
+Take a look at [com.link-intersystems.gradle.published-artifact](#comlink-intersystemsgradlepublished-artifact-) above.
 
 To ease the deployment you can use the [`exportGpgSigning`](https://gist.github.com/renelink/6a12336b5282c94a69a598deddf295ab) bash function.
 
