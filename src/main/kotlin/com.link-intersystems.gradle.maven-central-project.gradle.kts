@@ -1,3 +1,5 @@
+import gradle.kotlin.dsl.accessors._273c41c017a30de2a6ca8df633927332.publish
+
 plugins {
     id("io.github.gradle-nexus.publish-plugin")
 }
@@ -10,3 +12,20 @@ nexusPublishing {
         }
     }
 }
+
+
+
+subprojects {
+    val closeAndRelease: String? by this
+    val closeAndReleaseEnabled = closeAndRelease ?: "true"
+
+    if (closeAndReleaseEnabled == "true") {
+        // closeAndReleaseStagingRepositories if maven-publish is applied
+        pluginManager.withPlugin("org.gradle.maven-publish") {
+            tasks.publish {
+                finalizedBy(tasks.closeAndReleaseStagingRepositories)
+            }
+        }
+    }
+}
+
