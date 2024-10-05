@@ -39,25 +39,25 @@ The configured signing plugin expects that the following project properties are 
 > ORG_GRADLE_PROJECT_signingKey
 > ORG_GRADLE_PROJECT_signingPassword
 
-## com.link-intersystems.gradle.maven-central-library [![Maven Central Version](https://img.shields.io/maven-central/v/com.link-intersystems.gradle.maven-central-library/com.link-intersystems.gradle.maven-central-library.gradle.plugin)](https://repo1.maven.org/maven2/com/link-intersystems/gradle/maven-central-library/com.link-intersystems.gradle.maven-central-library.gradle.plugin/)
+## com.link-intersystems.gradle.java-library [![Maven Central Version](https://img.shields.io/maven-central/v/com.link-intersystems.gradle.java-library/com.link-intersystems.gradle.java-library.gradle.plugin)](https://repo1.maven.org/maven2/com/link-intersystems/gradle/java-library/com.link-intersystems.gradle.java-library.gradle.plugin/)
 
 Add this plugin to the project's `build.gradle.kts` that contains a java library to deploy.
 
 ```kotlin
 // build.gradle.kts
 plugins {
-    id("com.link-intersystems.gradle.maven-central-library") version "+" // set a specific version
+    id("com.link-intersystems.gradle.java-library") version "+" // set a specific version
 }
 ```
 
-## com.link-intersystems.gradle.maven-central-platform [![Maven Central Version](https://img.shields.io/maven-central/v/com.link-intersystems.gradle.maven-central-platform/com.link-intersystems.gradle.maven-central-platform.gradle.plugin)](https://repo1.maven.org/maven2/com/link-intersystems/gradle/maven-central-platform/com.link-intersystems.gradle.maven-central-platform.gradle.plugin/)
+## com.link-intersystems.gradle.java-platform [![Maven Central Version](https://img.shields.io/maven-central/v/com.link-intersystems.gradle.java-platform/com.link-intersystems.gradle.java-platform.gradle.plugin)](https://repo1.maven.org/maven2/com/link-intersystems/gradle/java-platform/com.link-intersystems.gradle.java-platform.gradle.plugin/)
 
 Add this plugin to the project's `build.gradle.kts` that contains a java platform (aka BOM) to deploy. See [Sharing dependency versions between projects](https://docs.gradle.org/current/userguide/platforms.html) for details.
 
 ```kotlin
 // build.gradle.kts
 plugins {
-    id("com.link-intersystems.gradle.maven-central-platform") version "+" // set a specific version
+    id("com.link-intersystems.gradle.java-platform") version "+" // set a specific version
 }
 ```
 
