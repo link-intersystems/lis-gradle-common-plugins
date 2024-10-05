@@ -1,8 +1,8 @@
 plugins {
     `kotlin-dsl`
     id("com.link-intersystems.gradle.published-artifact")
+    id("com.link-intersystems.gradle.java-project")
     id("com.link-intersystems.gradle.maven-central-project")
-    id("com.link-intersystems.gradle.java-library")
     id("net.researchgate.release")
 }
 
