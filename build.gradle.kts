@@ -9,6 +9,7 @@ plugins {
 
 dependencies {
     implementation("io.github.gradle-nexus:publish-plugin:2.0.0")
+    implementation("net.researchgate:gradle-release:3.0.2")
 }
 
 
