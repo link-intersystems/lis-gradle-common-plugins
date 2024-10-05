@@ -18,7 +18,9 @@ allprojects {
     val closeAndReleaseEnabled = closeAndRelease ?: "true"
 
     if (closeAndReleaseEnabled == "true") {
-        tasks.findByName("afterPublish")?.dependsOn("closeAndReleaseRepository")
+        tasks.findByName("closeAndReleaseRepository")?.configure<DefaultTask> {
+            tasks.findByName("afterPublish")?.dependsOn("closeAndReleaseRepository")
+        }
     }
 }
 
