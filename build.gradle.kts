@@ -50,3 +50,7 @@ publishing.repositories {
         url = uri(project.layout.buildDirectory.file(".m2/repository"))
     }
 }
+
+tasks.findByName("closeAndReleaseRepository")?.configure<DefaultTask> {
+    tasks.findByName("afterPublish")?.dependsOn("closeAndReleaseRepository")
+}
