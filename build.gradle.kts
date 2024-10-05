@@ -51,6 +51,6 @@ publishing.repositories {
     }
 }
 
-tasks.findByName("closeAndReleaseRepository")?.configure<DefaultTask> {
-    tasks.findByName("afterPublish")?.dependsOn("closeAndReleaseRepository")
+if(tasks.findByName("closeAndReleaseStagingRepositories") != null) {
+    tasks.findByName("afterPublish")?.dependsOn("closeAndReleaseStagingRepositories")
 }
