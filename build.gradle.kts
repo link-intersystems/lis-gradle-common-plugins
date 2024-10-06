@@ -9,7 +9,6 @@ plugins {
 
 dependencies {
     implementation("io.github.gradle-nexus:publish-plugin:2.0.0")
-    compileOnly("net.researchgate:gradle-release:3.0.2")
 }
 
 
@@ -51,6 +50,46 @@ publishing.repositories {
     }
 }
 
-if(tasks.findByName("closeAndReleaseStagingRepositories") != null) {
+if (tasks.findByName("closeAndReleaseStagingRepositories") != null) {
     tasks.findByName("afterPublish")?.dependsOn("closeAndReleaseStagingRepositories")
+}
+
+
+// Work around for Cannot include build 'build-logic' in build '???'. This is not supported yet.
+// See https://github.com/researchgate/gradle-release/issues/304
+val realRelease = tasks.create<DefaultTask>("realRelease") {
+    dependsOn(
+        "createScmAdapter",
+        "initScmAdapter",
+        "checkCommitNeeded",
+        "checkUpdateNeeded",
+        "checkoutMergeToReleaseBranch",
+        "unSnapshotVersion",
+        "confirmReleaseVersion",
+        "checkSnapshotDependencies",
+        "runBuildTasks",
+        "preTagCommit",
+        "createReleaseTag",
+        "checkoutMergeFromReleaseBranch",
+        "updateVersion",
+        "commitNewVersion"
+    )
+}
+
+
+configure(listOf(tasks.release, tasks.runBuildTasks)) {
+    configure {
+        onlyIf { false }
+    }
+}
+
+
+val pushToRemoteName = if (project.findProperty("pushToRemote") != null) "origin" else ""
+
+release {
+    tagTemplate = "v\${version}"
+
+    git {
+        pushToRemote = pushToRemoteName
+    }
 }

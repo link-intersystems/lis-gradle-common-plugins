@@ -1,5 +1,3 @@
-import net.researchgate.release.ReleaseExtension
-
 plugins {
     id("io.github.gradle-nexus.publish-plugin")
 }
@@ -21,20 +19,6 @@ allprojects {
         val closeAndReleaseStagingRepositoriesTask = tasks.findByName("closeAndReleaseStagingRepositories")
         if(closeAndReleaseStagingRepositoriesTask != null) {
             tasks.findByName("afterPublish")?.dependsOn(closeAndReleaseStagingRepositoriesTask)
-        }
-    }
-}
-
-
-
-pluginManager.withPlugin("net.researchgate.release") {
-    val pushToRemoteName = if (project.findProperty("pushToRemote") != null) "origin" else ""
-
-    project.configure<ReleaseExtension> {
-        tagTemplate = "v\${version}"
-
-        git {
-            pushToRemote = pushToRemoteName
         }
     }
 }
