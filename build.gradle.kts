@@ -43,6 +43,7 @@ publishing.publications.withType<MavenPublication> {
 }
 
 
+
 publishing.repositories {
     maven {
         name = "TempLocal"
@@ -50,38 +51,6 @@ publishing.repositories {
     }
 }
 
-if (tasks.findByName("closeAndReleaseStagingRepositories") != null) {
-    tasks.findByName("afterPublish")?.dependsOn("closeAndReleaseStagingRepositories")
-}
-
-
-// Work around for Cannot include build 'build-logic' in build '???'. This is not supported yet.
-// See https://github.com/researchgate/gradle-release/issues/304
-val realRelease = tasks.create<DefaultTask>("realRelease") {
-    dependsOn(
-        "createScmAdapter",
-        "initScmAdapter",
-        "checkCommitNeeded",
-        "checkUpdateNeeded",
-        "checkoutMergeToReleaseBranch",
-        "unSnapshotVersion",
-        "confirmReleaseVersion",
-        "checkSnapshotDependencies",
-        "runBuildTasks",
-        "preTagCommit",
-        "createReleaseTag",
-        "checkoutMergeFromReleaseBranch",
-        "updateVersion",
-        "commitNewVersion"
-    )
-}
-
-
-configure(listOf(tasks.release, tasks.runBuildTasks)) {
-    configure {
-        onlyIf { false }
-    }
-}
 
 
 val pushToRemoteName = if (project.findProperty("pushToRemote") != null) "origin" else ""
