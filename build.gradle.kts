@@ -3,7 +3,7 @@ plugins {
     id("com.link-intersystems.gradle.published-artifact")
     id("com.link-intersystems.gradle.java-project")
     id("com.link-intersystems.gradle.maven-central-project")
-    id("net.researchgate.release")
+    id("net.researchgate.release") version "3.0.2"
 }
 
 
